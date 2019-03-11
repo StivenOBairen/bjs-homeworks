@@ -64,18 +64,20 @@ console.log (getPersonData ({aaa: 1, bbb: 1}));
   };
 
 let averageStatistic = data;
-
+let  sumOfAverage = 0;
   for (let prop in data) {
     let sumOfProp = 0;
+     
       for (let i=0; i < data[prop].length; i++){
        sumOfProp += data[prop][i];
       }
       let averageOfProp = (sumOfProp / data[prop].length);
       averageStatistic[prop] = averageOfProp;
     console.log(`${prop}: ${averageStatistic[prop]}`);
-    //...
+    sumOfAverage += averageStatistic[prop];
+    
   }
-  //let averageSummary; 
+  console.log("AVERAGE: " + sumOfAverage/8);
 
 function getAverageScore (data) {
   //...
