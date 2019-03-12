@@ -1,3 +1,4 @@
+charset = "utf-8";
 //-----------task1-------------
 function getSolutions (a, b, c) {
 let D = b ** 2 - 4 * a * c;
@@ -51,8 +52,8 @@ console.log (getPersonData ({aaa: 0, bbb: 1}));
 console.log (getPersonData ({aaa: 1, bbb: 1}));
 
 //-----------task3-------------
-//for_test
-  let data = {
+
+    let data = {
     algebra: [2, 4, 5, 2, 3, 4],
     geometry: [2, 4, 5],
     russian: [3, 3, 4, 5],
@@ -62,8 +63,10 @@ console.log (getPersonData ({aaa: 1, bbb: 1}));
     music: [5, 5, 4, 5, 5],
     poetry: [4, 4, 3, 5, 3, 2]
   };
-
 let averageStatistic = data;
+  
+function getAverageScore (data) {
+
 let  sumOfAverage = 0;
   for (let prop in data) {
     let sumOfProp = 0;
@@ -75,12 +78,11 @@ let  sumOfAverage = 0;
       averageStatistic[prop] = averageOfProp;
     console.log(`${prop}: ${averageStatistic[prop]}`);
     sumOfAverage += averageStatistic[prop];
+	
     
   }
-  console.log("AVERAGE: " + sumOfAverage/8);
-
-function getAverageScore (data) {
-  //...
-  return averageStatistic;
+  averageStatistic.average = sumOfAverage/8;
+  console.log (averageStatistic);
 };
 
+getAverageScore(data);
