@@ -1,17 +1,23 @@
 //----------task1------------
-
+//year, month, day
+function checkAge(birthdayDate) {
+  let now = +new Date();
+  console.log(`now: ${now}`);
+  birthdayDate = new Date(birthdayDate).getTime() / 1000;
+  console.log(`birthdayDate: ${birthdayDate}`);
+  let age = (now - birthdayDate) / 31536000000;
+  return Math.round(age);
+}
+let person = '1992.09.21';
+console.log('age: ' +  checkAge(person) );
 
 //----------task2------------
 
 function whatAnimalSays (animal) {
   let sound = animal.sound;
-
-  //в задании сказано: 
-  //"Если переменная animal равна undefined"
-  //это опечатка? или я не понял? 
   if (animal.sound == undefined) {
     return null;
-  } else if (animal.sound !== undefined) {
+  } else {
     return animal.sound;
   }
 }
@@ -28,11 +34,8 @@ function getAverageMark(marks) {
     sumOfMarks += marks[i];
   }
   let average = sumOfMarks / marks.length;
-  //let roundedAverage = Math.round(average);
-  //return roundedAverage;
-  //нужно ли создавать отдельную переменную roundedAverage, если сразу можно вывести расчет?
   return Math.round(average);
 }
 
-let a = [3, 2, 1, 5, 3, 4, 5, 4];
-getAverageMark(a);
+let marks = [3, 2, 1, 5, 3, 4, 5, 4];
+getAverageMark(marks);
