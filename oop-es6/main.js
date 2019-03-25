@@ -1,3 +1,48 @@
+class StudentLog
+{
+  constructor( name ) {
+    this.name = name;
+  }
+  getName() {
+    return this.name;
+  }
+  addGrade( grade, subject ) {
+    if (!this[subject]) {
+      this[subject] = [];
+    }
+    if ( grade >= 1 && grade <= 5) {
+     return this[subject].push(grade);           
+    } else {
+      console.log(`Вы пытались поставить оценку "${grade}" по предмету "${subject}". Допустимый предел: 1-5`);
+    } 
+  }
+  getAverageBy( subject ){
+    if( this[subject] ) {
+      let sum = 0;
+      for (let i = 0; i < this[subject].length; i++) {
+        sum += this[subject][i];
+      }
+      return (sum / this[subject].length );
+    } else {
+      return 0;
+    }
+  }
+}
+
+let stud = new StudentLog( 'Oleg Nikiforov' );
+stud.getName();
+
+
+stud.addGrade(3, 'algebra');
+stud.addGrade(4, 'geometry');
+stud.addGrade(2, 'physics');
+stud.addGrade(5, 'algebra');
+stud.addGrade('отлично', 'algebra');
+console.log(stud);
+console.log ( stud.getAverageBy('algebra'));
+
+
+
 class Weapon
 {
   constructor( options = {}) {
@@ -284,7 +329,7 @@ class Player
       this.weapon = new Axe;
     }
     takeDamage( damage ) {
-      if ( this.getLuck() > 0.5 ) { //++Каждый шестой удар соперника
+      if ( this.getLuck() > 0.5 ) {
         super.takeDamage( damage / 2);
         return;
       }
@@ -322,7 +367,6 @@ class Player
 const play = players => {
   let turn = 1;
   while( players.length > 1 ) {
-  //for (let t = 0; t < 10; t++) {
     console.log( `\n\nХод ${turn++}\nСводная информация` );
     for ( let i = 0, len = players.length; i < len; i++) {
       const player = players[ i ];
