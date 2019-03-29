@@ -2,30 +2,50 @@ class StudentLog
 {
   constructor( name ) {
     this.name = name;
+    this.marks = {};
   }
   getName() {
     return this.name;
   }
   addGrade( grade, subject ) {
-    if (!this[subject]) {
-      this[subject] = [];
+    if (!this.marks[subject]) { 
+      this.marks[subject] = [grade];
     }
     if ( grade >= 1 && grade <= 5) {
-     return this[subject].push(grade);           
+     return this.marks[subject].push(grade);           
     } else {
       console.log(`Вы пытались поставить оценку "${grade}" по предмету "${subject}". Допустимый предел: 1-5`);
-    } 
+    }
   }
-  getAverageBy( subject ){
-    if( this[subject] ) {
+  getAverageBy( subject ) {
+    if( this.marks[subject] ) {
       let sum = 0;
-      for (let i = 0; i < this[subject].length; i++) {
-        sum += this[subject][i];
+      for (let i = 0; i < this.marks[subject].length; i++) {
+        sum += this.marks[subject][i];
       }
-      return (sum / this[subject].length );
+      return (sum / this.marks[subject].length );
     } else {
       return 0;
     }
+  }
+  getTotalAverage() {
+    if ( Object.keys(this.marks).length == 0 ) {
+      return 0;
+    } else {
+    let counter = Object.values(this.marks).length,
+        sum = 0;
+    for (let key in this.marks ) {
+      sum += this.getAverageBy(key);     
+    }
+    return sum / counter;
+    } 
+  }
+  getGradesBySubject( subject ) {
+     //список всех оценок по предмету. При отсутствии предмета в журнале, необходимо вернуть пустой массив
+     return Object.values(this.marks[subject]);
+  }
+  getGrades() {
+    return this.marks;
   }
 }
 
@@ -40,6 +60,11 @@ stud.addGrade(5, 'algebra');
 stud.addGrade('отлично', 'algebra');
 console.log(stud);
 console.log ( stud.getAverageBy('algebra'));
+
+let test = new StudentLog( 'Tester' );
+stud.getTotalAverage();
+stud.getGradesBySubject( 'physics' );
+stud.getGrades();
 
 
 
