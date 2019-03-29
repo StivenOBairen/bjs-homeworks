@@ -356,6 +356,12 @@ class Player
       this.description = 'Демиург';
       this.weapon = new StormStaff();
     }
+    getDamage( distance ) {
+      if ( this.baseMagic > 0 && this.getLuck() > 0.6 ) {
+        return super.getDamage( distance ) * 1.5;
+      }
+      return super.getDamage( distance );
+    }
   }
 
 const play = players => {
