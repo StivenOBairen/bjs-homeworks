@@ -133,7 +133,7 @@ class Player
       agility = 15,
       luck = 10,
       description = 'Игрок',
-      weapon = new Arm,
+      weapon = new Arm(),
       name,
       position = 0
     } = options;
@@ -198,12 +198,12 @@ class Player
     if ( !this.weapon.isBroken()) {
       return;
     }
-    if ( this.weapon.constructor === Knife ) {
-      this.weapon = new Arm;
+    if ( this.weapon.constructor instanceof Knife ) {
+      this.weapon = new Arm();
       console.log( 'Дерусь голыми руками' );
       return;
     }
-    this.weapon = new Knife;
+    this.weapon = new Knife();
     console.log( 'Взял нож' );
   }
   tryAttack( enemy ) {
@@ -238,9 +238,6 @@ class Player
     this.move( dPos );
   }
   turn( players ) {
-    if ( this.life === 0 ) {
-      return;
-    }
     const enemy = this.chooseEnemy( players );
     if ( !enemy ) {
       return;
@@ -258,7 +255,7 @@ class Player
         speed: 2,
         attack: 10,
         description: 'Воин',
-        weapon: new Sword
+        weapon: new Sword()
       });
       super( options );
     }
@@ -280,18 +277,12 @@ class Player
         attack: 5,
         agility: 10,
         description: 'Лучник',
-        weapon: new Bow
+        weapon: new Bow()
       });
       super( options );
     }
-    takeDamage( damage ) {
-      const { baseMagic, magic } = this;
-      if ( magic / baseMagic > 0.5 ) {
-        super.takeDamage( damage / 2 );
-        this.magic -= 12;
-        return;
-      }
-      super.takeDamage( damage );
+    getDamage( distance ) {
+      return ( this.attack + this.weapon.getDamage()) * this.getLuck() * distance / this.weapon.range;
     }
   }
   class Mage extends Player 
@@ -303,7 +294,7 @@ class Player
         attack: 5,
         agility: 8,
         description: 'Маг',
-        weapon: new Staff
+        weapon: new Staff()
       });
       super( options );
     }
@@ -326,7 +317,7 @@ class Player
       this.attack = 15;
       this.luck = 20;
       this.description = 'Гном';
-      this.weapon = new Axe;
+      this.weapon = new Axe();
     }
     takeDamage( damage ) {
       if ( this.getLuck() > 0.5 ) {
@@ -346,7 +337,7 @@ class Player
       this.agility = 20;
       this.luck = 15;
       this.description = 'Арбалетчик';
-      this.weapon = new LongBow;
+      this.weapon = new LongBow();
     }
   }
   class Demiurge extends Mage 
@@ -360,7 +351,7 @@ class Player
       this.attack = 6;
       this.luck = 12;
       this.description = 'Демиург';
-      this.weapon = new StormStaff;
+      this.weapon = new StormStaff();
     }
   }
 
@@ -371,19 +362,14 @@ const play = players => {
     for ( let i = 0, len = players.length; i < len; i++) {
       const player = players[ i ];
       console.log(`Игрок ${i} (pos ${player.position}): ${player.life.toFixed(2)}/${player.magic.toFixed(2)}`);
-    }
-    console.log();
-    for ( let i = 0, len = players.length; i < len; i++) {
       console.log(`Ходит игрок ${i}`);
-      players[ i ].turn( players );
-    }
-    
-    for ( let i = 0, len = players.length; i < len; i++) {
+      player.turn( players );
       if ( players[ i ].isDead()) {
         console.log( `\nИгрок ${i} погиб:`, players[ i ]);
-        players[ i ] = null;
+        delete players[ i ];
       }
     }
+    console.log();
     players = players.filter( p => p );
   }
   const winner = players.pop();
