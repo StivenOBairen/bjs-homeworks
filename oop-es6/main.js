@@ -318,9 +318,12 @@ class Player
       this.luck = 20;
       this.description = 'Гном';
       this.weapon = new Axe();
+      this.takeDamageCounter = 0;
     }
     takeDamage( damage ) {
-      if ( this.getLuck() > 0.5 ) {
+      this.takeDamageCounter++;
+      if (this.takeDamageCounter = 6 && this.getLuck() > 0.5 ) {
+        this.takeDamageCounter = 0;
         super.takeDamage( damage / 2);
         return;
       }
