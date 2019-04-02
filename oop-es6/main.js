@@ -8,11 +8,12 @@ class StudentLog
     return this.name;
   }
   addGrade( grade, subject ) {
-    if (!this.marks[subject]) { 
-      this.marks[subject] = [grade];
-    }
     if ( grade >= 1 && grade <= 5) {
-     return this.marks[subject].push(grade);           
+      if (!this.marks[subject]) { 
+      this.marks[subject] = [grade];
+      } else {
+        return this.marks[subject].push(grade);           
+      }
     } else {
       console.log(`Вы пытались поставить оценку "${grade}" по предмету "${subject}". Допустимый предел: 1-5`);
     }
@@ -41,11 +42,14 @@ class StudentLog
     } 
   }
   getGradesBySubject( subject ) {
-     //список всех оценок по предмету. При отсутствии предмета в журнале, необходимо вернуть пустой массив
      return Object.values(this.marks[subject]);
   }
-  getGrades() {
-    return this.marks;
+  getGrades( subject ) {
+    if ( this.marks[subject] ) {
+      return this.marks;
+    } else {
+      return this.marks[subject] = {};
+    }    
   }
 }
 
@@ -64,7 +68,8 @@ console.log ( stud.getAverageBy('algebra'));
 let test = new StudentLog( 'Tester' );
 stud.getTotalAverage();
 stud.getGradesBySubject( 'physics' );
-stud.getGrades();
+stud.getGrades('asd');
+
 
 
 
