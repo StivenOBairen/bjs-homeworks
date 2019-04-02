@@ -48,7 +48,7 @@ class StudentLog
     if ( this.marks[subject] ) {
       return this.marks;
     } else {
-      return this.marks[subject] = {};
+      return this[subject];
     }    
   }
 }
@@ -129,7 +129,7 @@ class Weapon
   }
   class Staff extends Weapon
   {
-    constructor( name = 'Посох', attack = 8, durability = 200, range = 2 ) {
+    constructor( name = 'Посох', attack = 8, durability = 300, range = 2 ) {
       super({ name, attack, durability, range });
     }
   }
@@ -186,7 +186,7 @@ class Player
     return this.life <= 0;
   }
   getLuck() {
-    return ( Math.random() * 101 + this.luck ) / 100;
+    return ( Math.random() * 100 + this.luck ) / 100;
   }
   getDamage( distance ) {
     if ( distance > this.weapon.range ) {
@@ -352,7 +352,7 @@ class Player
     }
     takeDamage( damage ) {
       this.takeDamageCounter++;
-      if (this.takeDamageCounter = 6 && this.getLuck() > 0.5 ) {
+      if (this.takeDamageCounter == 6 && this.getLuck() > 0.5 ) {
         this.takeDamageCounter = 0;
         super.takeDamage( damage / 2);
         return;
@@ -398,21 +398,22 @@ const play = players => {
   let turn = 1;
   while( players.length > 1 ) {
     console.log( `\n\nХод ${turn++}\nСводная информация` );
-    for ( let i = 0, len = players.length; i < len; i++) {
+    for ( let i = 0; i < players.length; i++) {
+      console.log(`old: ` + players.length);
       const player = players[ i ];
       console.log(`Игрок ${i} (pos ${player.position}): ${player.life.toFixed(2)}/${player.magic.toFixed(2)}`);
       console.log(`Ходит игрок ${i}`);
       player.turn( players );
       if ( players[ i ].isDead()) {
         console.log( `\nИгрок ${i} погиб:`, players[ i ]);
-        delete players[ i ];
+        //delete players[ i ];
+        players.splice( players[ i ], 1 );
       }
     }
     console.log();
-    players = players.filter( p => p );
+    //return players = players.filter( p => p );
   }
-  const winner = players.pop();
-  console.log( '\n\nПобедитель:', winner );
+  console.log( '\n\nПобедитель:', players[0] );
 };
 
 play([
